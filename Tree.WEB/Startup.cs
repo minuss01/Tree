@@ -31,9 +31,7 @@ namespace Tree.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddControllersWithViews();
-            services.AddScoped<ICompositeRepository, CompositeRepository>();
-            services.AddScoped<ILeafRepository, LeafRepository>();
-
+            services.AddRepositoriesModule();
             services.AddServicesModule();
             var mapperConfig = new MapperConfiguration(mc =>
             {

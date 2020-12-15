@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tree.WEB.Services.Abstract;
+using Tree.WEB.ViewModels;
 
 namespace Tree.WEB.Controllers
 {
@@ -13,10 +15,17 @@ namespace Tree.WEB.Controllers
             _service = service;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<List<CompositeViewModel>> GetTree()
         {
             var result = await _service.GetAllCompositesAsync();
-            return View(result);
+
+            return result;
         }
     }
 }

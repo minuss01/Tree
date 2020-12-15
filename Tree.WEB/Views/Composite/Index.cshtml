@@ -1,9 +1,27 @@
-﻿@model List<CompositeViewModel>
-@{ ViewData["Title"] = "Tree"; }
+﻿@{ ViewData["Title"] = "Tree"; }
 
-@foreach (var item in Model)
-	{
-		 <ul>
+<div class="row" id="tree">
+    <div class="col-12"></div>
+</div>
 
-		 </ul>
-	}
+
+<script>
+    new Vue({
+        el: '#tree',
+        data: {
+            tree: null,
+        },
+        methods: {
+            getData: function () {
+                axios
+                    .get('/Composite/GetTree')
+                    .then(response => {
+                        
+                    })
+            },
+            handleNodes: function (data) {
+
+            } 
+        }
+    })
+</script>

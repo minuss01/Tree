@@ -8,8 +8,8 @@ namespace Tree.DB.Modules
     {
         public static void AddRepositoriesModule(this IServiceCollection services)
         {
-            services.AddSingleton<ICompositeRepository, CompositeRepository>();
-            services.AddSingleton<ILeafRepository, LeafRepository>();
+            services.AddScoped<ICompositeRepository, CompositeRepository>();
+            services.AddScoped<ILeafRepository, LeafRepository>();
         }
     }
 }

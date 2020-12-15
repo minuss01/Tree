@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - Tree</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -37,6 +39,55 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Composite/GetTree/',
+                success: function (response) {
+                    console.log(response);
+                    var html = '';
+                    html = response.forEach(function processNodes(o) {
+
+                        if (o.type == 2 ||o.composites !== 'object' || (o.type == 1 && o.composites !== 'object')) {
+                            return printNodeName(o);
+                        }
+                        else {
+                            return printNodeName(o) + '<ul>' + o.forEach(processNodes) + '</ul>';
+                        }
+                    });
+                    console.log(html);
+                }
+            });
+        });
+
+        function printNodeName(node) {
+            return '<li>' + node.name + '</li>';
+        }
+
+
+            //function buildList(data) {
+            //    var html = '<ul>';
+            //    for (item in data) {
+            //        html += '<li>';
+            //        if (typeof (data[item].type) === 1) { // An array will return 'object'
+            //            if (isSub) {
+            //                html += '<a href="' + data[item].link + '">' + data[item].name + '</a>';
+            //            } else {
+            //                html += data[item].id; // Submenu found, but top level list item.
+            //            }
+            //            html += buildList(data[item].sub, true); // Submenu found. Calling recursively same method (and wrapping it in a div)
+            //        } else {
+            //            html += data[item].id // No submenu
+            //        }
+            //        html += '</li>';
+            //    }
+            //    html += '</ul>';
+            //    html += (isSub) ? '</div>' : '';
+            //    return html;
+            //}
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
