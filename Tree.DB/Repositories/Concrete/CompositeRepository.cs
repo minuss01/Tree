@@ -4,10 +4,11 @@ using Tree.DB.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Tree.DB.Repositories.Concrete
 {
-    internal class CompositeRepository : ICompositeRepository
+    public class CompositeRepository : ICompositeRepository
     {
         private readonly TreeContext _context;
 
@@ -23,12 +24,17 @@ namespace Tree.DB.Repositories.Concrete
 
         public async Task<IList<Composite>> GetAllAsync()
         {
-            return await _context.Composities.ToListAsync();
+            return await _context.Composities.Where(c => c.CompositeParentId == null).ToListAsync();
         }
 
         public async Task<Composite> GetByIdAsync(int id)
         {
             return await _context.Composities.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public IQueryable<Composite> GetQueryable()
+        {
+            return _context.Composities;
         }
 
         public async Task RemoveAsync(Composite composite)

@@ -1,11 +1,13 @@
 ﻿using Tree.DB.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Tree.DB.Repositories.Abstract
 {
-    public interface ILeafRepository : IRepository
+    public interface ILeafRepository
     {
+        IQueryable<Leaf> GetQueryable();
         Task<IList<Leaf>> GetAllAsync();
         Task<Leaf> GetByIdAsync(int id);
         Task AddAsync(Leaf leaf);

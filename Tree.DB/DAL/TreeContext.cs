@@ -9,6 +9,5 @@ namespace Tree.DB.DAL
         public DbSet<Leaf> Leaves { get; set; }
 
         public TreeContext(DbContextOptions options) : base(options) { }
-        
     }
 }

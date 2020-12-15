@@ -1,14 +1,16 @@
-﻿using Tree.DB.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Tree.DB.DAL;
 using Tree.DB.Entities;
 using Tree.DB.Repositories.Abstract;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Tree.DB.Repositories.Concrete
 {
-    internal class LeafRepository : ILeafRepository
+    public class LeafRepository : ILeafRepository
     {
+
         private readonly TreeContext _context;
 
         public LeafRepository(TreeContext context)
@@ -16,9 +18,9 @@ namespace Tree.DB.Repositories.Concrete
             _context = context;
         }
 
-        public async Task AddAsync(Leaf leaf)
+        public async Task AddAsync(Leaf composite)
         {
-            await _context.Leaves.AddAsync(leaf);
+            await _context.Leaves.AddAsync(composite);
         }
 
         public async Task<IList<Leaf>> GetAllAsync()
@@ -28,12 +30,17 @@ namespace Tree.DB.Repositories.Concrete
 
         public async Task<Leaf> GetByIdAsync(int id)
         {
-            return await _context.Leaves.FirstOrDefaultAsync(l => l.Id == id);
+            return await _context.Leaves.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task RemoveAsync(Leaf leaf)
+        public IQueryable<Leaf> GetQueryable()
         {
-            await Task.FromResult(_context.Leaves.Remove(leaf));
+            return _context.Leaves;
+        }
+
+        public async Task RemoveAsync(Leaf composite)
+        {
+            await Task.FromResult(_context.Leaves.Remove(composite));
         }
 
         public async Task SaveChangesAsync()
@@ -41,9 +48,10 @@ namespace Tree.DB.Repositories.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Leaf leaf)
+        public async Task UpdateAsync(Leaf composite)
         {
-            await Task.FromResult(_context.Leaves.Update(leaf));
+            await Task.FromResult(_context.Leaves.Update(composite));
         }
+
     }
 }

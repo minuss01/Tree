@@ -1,15 +1,16 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Tree.DB.DAL;
+using Tree.DB.Modules;
+using Tree.DB.Repositories.Abstract;
+using Tree.DB.Repositories.Concrete;
+using Tree.WEB.Mappers;
+using Tree.WEB.Modules;
 
 namespace Tree.WEB
 {
@@ -26,12 +27,25 @@ namespace Tree.WEB
         {
             services.AddDbContext<TreeContext>(options =>
             {
+                options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddControllersWithViews();
+            services.AddScoped<ICompositeRepository, CompositeRepository>();
+            services.AddScoped<ILeafRepository, LeafRepository>();
+
+            services.AddServicesModule();
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MapperProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -41,7 +55,7 @@ namespace Tree.WEB
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -55,7 +69,7 @@ namespace Tree.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Composite}/{action=Index}/{id?}");
             });
         }
     }
