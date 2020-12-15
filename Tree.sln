@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tree.WEB", "Tree.WEB\Tree.WEB.csproj", "{0EFE039B-66CA-4A72-B101-BBBE15CE6511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tree.DB", "Tree.DB\Tree.DB.csproj", "{6312E5B5-6C0C-472A-AC2B-13B1D4A6C4BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EFE039B-66CA-4A72-B101-BBBE15CE6511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFE039B-66CA-4A72-B101-BBBE15CE6511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFE039B-66CA-4A72-B101-BBBE15CE6511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFE039B-66CA-4A72-B101-BBBE15CE6511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6312E5B5-6C0C-472A-AC2B-13B1D4A6C4BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6312E5B5-6C0C-472A-AC2B-13B1D4A6C4BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6312E5B5-6C0C-472A-AC2B-13B1D4A6C4BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6312E5B5-6C0C-472A-AC2B-13B1D4A6C4BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B5785D8-D21F-4732-BFC5-BB945AEEC528}
+	EndGlobalSection
+EndGlobal
