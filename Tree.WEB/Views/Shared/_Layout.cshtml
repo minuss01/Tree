@@ -46,21 +46,21 @@
                 url: '/Node/GetTree/',
                 success: function (response) {
                     $("#tree").html(buildTree(response, false));
+                    //$("#tree2").html(buildList(response, false));
+                    makeDropdowns();
                 }
             });
         });
 
-        function buildTree(data, isTop) {
-            var html = (isTop) ? '<div>' : '';
-                html += '<ul>';
+        function buildTree(data, isNode) {
+            var html = '';
+            html += (isNode) ? '<ul class="nested">' : '<ul>';
             for (item in data) {
                 html += '<li>';
-                if (typeof (data[item].nodes) === 'object') {
-                    if (isTop) {
-                        html += '<a href="#">' + data[item].name + '</a>';
-                    } else {
-                        html += data[item].name;
-                    }
+                if (data[item].nodes.length > 0) {
+
+                    html += '<span class="caret">' + data[item].name + '</span>';
+
                     html += buildTree(data[item].nodes, true);
                 } else {
                     html += data[item].name;
@@ -68,9 +68,45 @@
                 html += '</li>';
             }
             html += '</ul>';
-            html += (isTop) ? '</div>' : '';
             return html;
         }
+
+        function makeDropdowns() {
+            var toggler = document.getElementsByClassName("caret");
+            var i;
+
+            for (i = 0; i < toggler.length; i++) {
+                toggler[i].addEventListener("click", function () {
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    this.classList.toggle("caret-down");
+                });
+            }
+        }
+
+        //function buildList(data, isSub) {
+        //    var html = (isSub) ? '<div>' : ''; // Wrap with div if true
+        //    html += '<ul>';
+        //    for (item in data) {
+        //        html += '<li>';
+        //        if (typeof (data[item].nodes) === 'object') { // An array will return 'object'
+        //            if (isSub) {
+        //                html += '<a href="#">' + data[item].name + '</a>';
+        //            } else {
+        //                html += data[item].name; // Submenu found, but top level list item.
+        //            }
+        //            html += buildList(data[item].nodes, true); // Submenu found. Calling recursively same method (and wrapping it in a div)
+        //        } else {
+        //            html += data[item].name // No submenu
+        //        }
+        //        html += '</li>';
+        //    }
+        //    html += '</ul>';
+        //    html += (isSub) ? '</div>' : '';
+        //    return html;
+        //}
+
+        
+
     </script>
 
     @RenderSection("Scripts", required: false)
