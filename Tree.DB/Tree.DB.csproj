@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DAL\Migrations\20201215185818_added-NodeTypeEnum-to-composite-and-leaf-entity.cs" />
-    <Compile Remove="DAL\Migrations\20201215185818_added-NodeTypeEnum-to-composite-and-leaf-entity.Designer.cs" />
-    <Compile Remove="DAL\Migrations\20201215190240_added-NodeTypeEnum-to-composite-and-leaf-entity.cs" />
-    <Compile Remove="DAL\Migrations\20201215190240_added-NodeTypeEnum-to-composite-and-leaf-entity.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>

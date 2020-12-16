@@ -7,8 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tree.DB.DAL;
 using Tree.DB.Modules;
-using Tree.DB.Repositories.Abstract;
-using Tree.DB.Repositories.Concrete;
 using Tree.WEB.Mappers;
 using Tree.WEB.Modules;
 
@@ -52,7 +50,7 @@ namespace Tree.WEB
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Node/Error");
 
                 app.UseHsts();
             }
@@ -67,7 +65,7 @@ namespace Tree.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Composite}/{action=Index}/{id?}");
+                    pattern: "{controller=Node}/{action=Index}/{id?}");
             });
         }
     }

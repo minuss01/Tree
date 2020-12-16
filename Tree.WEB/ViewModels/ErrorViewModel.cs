@@ -1,6 +1,4 @@
-using System;
-
-namespace Tree.WEB.Models
+namespace Tree.WEB.ViewModels
 {
     public class ErrorViewModel
     {

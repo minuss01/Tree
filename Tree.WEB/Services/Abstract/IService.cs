@@ -6,10 +6,8 @@ namespace Tree.WEB.Services.Abstract
 {
     public interface IService
     {
-        Task<CompositeViewModel> GetCompositeByIdAsync(int id);
-        Task<LeafViewModel> GetLeafByIdAsync(int id);
-        Task<List<CompositeViewModel>> GetAllCompositesAsync();
-        Task<List<LeafViewModel>> GetAllLavesAsync();
+        Task<NodeViewModel> GetNodeByIdAsync(int id);
+        Task<List<NodeViewModel>> GetAllNodesAsync();
 
     }
 }

@@ -8,8 +8,7 @@ namespace Tree.WEB.Mappers
     {
         public MapperProfile()
         {
-            CreateMap<Composite, CompositeViewModel>().ReverseMap();
-            CreateMap<Leaf, LeafViewModel>().ReverseMap();
+            CreateMap<Node, NodeViewModel>().ReverseMap();
         }
     }
 }
