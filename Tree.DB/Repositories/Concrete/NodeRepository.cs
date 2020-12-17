@@ -1,0 +1,67 @@
+﻿using Tree.DB.DAL;
+using Tree.DB.Entities;
+using Tree.DB.Repositories.Abstract;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+
+namespace Tree.DB.Repositories.Concrete
+{
+    public class NodeRepository : INodeRepository
+    {
+        private readonly TreeContext _context;
+
+        public NodeRepository(TreeContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddAsync(Node node)
+        {
+            await _context.Nodes.AddAsync(node);
+        }
+
+        public async Task<IList<Node>> GetAllAsync()
+        {
+            return await _context.Nodes
+                .Where(c => c.NodeParentId == null)
+                .ToListAsync();
+        }
+
+        public async Task<IList<Node>> GetAllForSelectValuesAsync()
+        {
+            return await _context.Nodes.ToListAsync();
+        }
+
+        public async Task<Node> GetByIdAsync(int id)
+        {
+            return await _context.Nodes.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task RemoveAsync(Node node)
+        {
+            await RemoveChildrens(node.Nodes);
+            await Task.FromResult(_context.Nodes.Remove(node));
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Node node)
+        {
+            await Task.FromResult(_context.Nodes.Update(node));
+        }
+
+        private async Task RemoveChildrens(List<Node> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                await RemoveChildrens(node.Nodes);
+                await Task.FromResult(_context.Nodes.Remove(node));
+            }
+        }
+    }
+}

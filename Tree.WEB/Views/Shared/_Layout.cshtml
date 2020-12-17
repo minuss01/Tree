@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Tree</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Node" asp-action="Index">Tree</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $(document).ready(getTree());
+        $(document).ready(getSelectValues());
+
+        $(document).ready(function () {
+            $("#add-form").validate();
+        });
+        $(document).ready(function () {
+            $("#edit-form").validate();
+        });
+
+        function getTree() {
+            $.ajax({
+                type: 'GET',
+                url: '/Node/GetTree/',
+                success: function (response) {
+                    $("#tree").html(buildTree(response, false));
+                    makeDropdowns();
+                }
+            });
+        }
+        function buildTree(data, isNode) {
+            var html = '';
+            html += (isNode) ? '<ul class="nested">' : '<ul>';
+            for (item in data) {
+                html += '<li>';
+                if (data[item].nodes.length > 0) {
+                    html += '<span class="caret">' + data[item].name + '</span>' + renderActions(data[item]);
+                    html += buildTree(data[item].nodes, true);
+                } else {
+                    html += '<span class="empty">' + data[item].name + '</span>' + renderActions(data[item]);
+                }
+                html += '</li>';
+            }
+            html += '</ul>';
+            return html;
+        }
+        function renderActions(data) {
+            var html = '<span class="tree-actions">' +
+                '<button class="action-icon"onclick="showAddModal(' + data.id + ')"><i class="fas fa-plus"></i></button>' +
+                '<button class="action-icon" onclick="showEditModal(' + data.id + ')"><i class="fas fa-edit"></i></button>' +
+                '<button class="action-icon" onclick="deleteNode(' + data.id + ')"><i class="fas fa-trash"></i></button>' +
+                '</span>';
+
+            return html;
+        }
+        function makeDropdowns() {
+            var toggler = document.getElementsByClassName("caret");
+            var i;
+
+            for (i = 0; i < toggler.length; i++) {
+                toggler[i].addEventListener("click", function () {
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    this.classList.toggle("caret-down");
+                });
+            }
+        }
+
+        function showAddModal(parentId) {
+            if (parentId !== null) {
+                $('#add-parentid').val(parentId);
+            }
+            $('#add-modal').modal('show');
+        }
+        $("#add-form").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = {
+                id: 0,
+                name: $('#add-name').val(),
+                nodeParentId: parseInt($('#add-parentid').val()) === 0 ? null : parseInt($('#add-parentid').val())
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Node/Add',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(form),
+                success: function (response) {
+                    alert(response);
+                    $('#add-parentid').val(0);
+                    $('#add-modal').modal('hide');
+
+                    getTree();
+                }
+            });
+
+
+        });
+
+
+        function showEditModal(id) {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Node/Edit/' + id,
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#edit-name").val(response.name);
+                    $("#edit-id").val(response.id);
+                    if (response.nodeParentId !== null) {
+                        $("#select-node").val(response.nodeParentId);
+                    }
+                    else {
+                        $("#select-node").val('');
+                    }
+                    $('#edit-modal').modal('show');
+                }
+            })
+        }
+        $("#edit-form").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = {
+                id: parseInt($('#edit-id').val()) === 0 ? null : parseInt($('#edit-id').val()),
+                name: $('#edit-name').val(),
+                nodeParentId: parseInt($('#select-node').val()) === 0 ? null : parseInt($('#select-node').val())
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Node/Edit',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(form),
+                success: function (response) {
+                    alert(response);
+                    $('#edit-parentid').val(0);
+                    $('#edit-name').val('');
+                    $('#edit-id').val(0);
+                    $('#edit-modal').modal('hide');
+                    getTree();
+                }
+            });
+
+
+        });
+        function getSelectValues() {
+            $.ajax({
+                type: 'GET',
+                url: '/Node/GetSelectValues/',
+                success: function (response) {
+                    response.forEach(function (o) {
+                        $('#select-node').append(`<option value="${o.value}">
+                                                       ${o.label}
+                                                  </option>`);
+                    })
+                }
+            });
+        }
+
+        function resetForm(type) {
+            var validator = null;
+            if (type === 1) {
+                validator = $("#add-form").validate();
+            }
+            else {
+                validator = $("#edit-form").validate();
+            }
+            validator.resetForm();
+        };
+
+        function deleteNode(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/Node/Delete/' + id,
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response);
+                    getTree();
+                }
+            });
+        }
+
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

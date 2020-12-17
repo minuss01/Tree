@@ -1,0 +1,13 @@
+﻿@{ ViewData["Title"] = "Tree"; }
+
+<div class="main-app">
+    <div class="section">
+        <div class="section-header">
+            <span class="section-header-title">Tree</span>
+            <div class="section-header-actions"><button onclick="showAddModal()" class="action-icon"><i class="fas fa-plus"></i></button></div>
+        </div>
+        <div id="tree"></div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_Modals") 

@@ -1,0 +1,57 @@
+﻿<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <button type="button" class="close edit-cancel" data-dismiss="modal" aria-label="Close" onclick="resetForm(1)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form">
+                    <input type="hidden" name="nodeParentId" id="add-parentid" value="0" />
+                    <div class="form-group">
+                        <input type="text" name="name" id="add-name" class="form-control" placeholder="Name" minlength="3" maxlength="10" required/>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetForm(1)">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <button type="button" class="close add-cancel" data-dismiss="modal" aria-label="Close" onclick="resetForm(0)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form">
+                    <input type="hidden" name="id" id="edit-id" required/>
+                    <div class="form-group">
+                        <input type="text" name="name" id="edit-name" class="form-control" placeholder="Name" minlength="3" maxlength="10" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="select-node">Parent node</label>
+                        <select id="select-node" class="form-control">
+                            <option value="" selected>No parent</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary add-cancel" data-dismiss="modal" onclick="resetForm(0)">Close</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
