@@ -20,7 +20,7 @@ namespace Tree.WEB.Controllers
             _service = service;
             _mapper = mapper;
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -60,7 +60,7 @@ namespace Tree.WEB.Controllers
             return BadRequest();
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var result = await _service.RemoveNodeAsync(id);

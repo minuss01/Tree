@@ -39,11 +39,6 @@ namespace Tree.DB.Repositories.Concrete
             return await _context.Nodes.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public IQueryable<Node> GetQueryable()
-        {
-            return _context.Nodes;
-        }
-
         public async Task RemoveAsync(Node node)
         {
             await RemoveChildrens(node.Nodes);
@@ -68,7 +63,5 @@ namespace Tree.DB.Repositories.Concrete
                 await Task.FromResult(_context.Nodes.Remove(node));
             }
         }
-
-
     }
 }

@@ -7,7 +7,6 @@ namespace Tree.DB.Repositories.Abstract
 {
     public interface INodeRepository
     {
-        IQueryable<Node> GetQueryable();
         Task<IList<Node>> GetAllAsync();
         Task<IList<Node>> GetAllForSelectValuesAsync();
         Task<Node> GetByIdAsync(int id);

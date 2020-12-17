@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tree.DB.DAL;
 
 namespace Tree.DB.Migrations
 {
     [DbContext(typeof(TreeContext))]
-    partial class TreeContextModelSnapshot : ModelSnapshot
+    [Migration("20201217021514_added-initializer")]
+    partial class addedinitializer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
