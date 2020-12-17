@@ -43,7 +43,7 @@ namespace Tree.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] NodeFormViewModel request)
+        public async Task<IActionResult> Add([FromBody] NodeAddFormViewModel request)
         {
             if (ModelState.IsValid)
             {
@@ -63,11 +63,6 @@ namespace Tree.WEB.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
             var result = await _service.RemoveNodeAsync(id);
 
             if (!result.IsSuccess)
@@ -81,11 +76,6 @@ namespace Tree.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
             var result = await _service.GetNodeByIdAsync(id);
 
             if (!result.IsSuccess)
@@ -93,13 +83,13 @@ namespace Tree.WEB.Controllers
                 return BadRequest(result.Message);
             }
 
-            var model = _mapper.Map<NodeFormViewModel>(result);
+            var model = _mapper.Map<NodePostFormViewModel>(result);
 
             return Json(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody] NodeFormViewModel request)
+        public async Task<IActionResult> Edit([FromBody] NodePostFormViewModel request)
         {
             if (ModelState.IsValid)
             {

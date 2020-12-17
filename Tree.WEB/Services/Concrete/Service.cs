@@ -22,14 +22,23 @@ namespace Tree.WEB.Services.Concrete
         }
         public async Task<NodeViewModel> GetNodeByIdAsync(int id)
         {
+            if (id == 0)
+            {
+                return new NodeViewModel { IsSuccess = false, Message = "The node has not been found." };
+
+            }
+
             Node node = await _nodeRepository.GetByIdAsync(id);
+
             if (node == null)
             {
                 return new NodeViewModel { IsSuccess = false, Message = "The node has not been found." };
 
             }
+
             NodeViewModel model = _mapper.Map<NodeViewModel>(node);
             model.IsSuccess = true;
+
             return model;
         }
 
@@ -47,9 +56,13 @@ namespace Tree.WEB.Services.Concrete
             return models;
         }
 
-        public async Task<NodeViewModel> AddNodeAsync(NodeFormViewModel request)
+        public async Task<NodeViewModel> AddNodeAsync(NodeAddFormViewModel request)
         {
-            Node node = _mapper.Map<Node>(request);
+            Node node = new Node
+            {
+                Name = request.Name,
+                NodeParentId = request.NodeParentId
+            };
 
             try
             {
@@ -64,9 +77,14 @@ namespace Tree.WEB.Services.Concrete
             return new NodeViewModel { IsSuccess = true, Message = "The node has been added." };
         }
 
-        public async Task<NodeViewModel> UpdateNodeAsync(NodeFormViewModel request)
+        public async Task<NodeViewModel> UpdateNodeAsync(NodePostFormViewModel request)
         {
-            var node = _mapper.Map<Node>(request);
+            Node node = new Node
+            {
+                Id = request.Id,
+                Name = request.Name,
+                NodeParentId = request.NodeParentId
+            };
 
             try
             {
@@ -83,11 +101,16 @@ namespace Tree.WEB.Services.Concrete
 
         public async Task<NodeViewModel> RemoveNodeAsync(int id)
         {
+            if (id == 0)
+            {
+                return new NodeViewModel { IsSuccess = false, Message = "The node has not been found." };
+            }
+
             Node node = await _nodeRepository.GetByIdAsync(id);
 
             if (node == null)
             {
-                return new NodeViewModel { IsSuccess = false, Message = "The node has not been deleted." };
+                return new NodeViewModel { IsSuccess = false, Message = "The node has not been found." };
             }
             try
             {
@@ -96,11 +119,10 @@ namespace Tree.WEB.Services.Concrete
             }
             catch (System.Exception ex)
             {
-                return new NodeViewModel { IsSuccess = false, Message = "The node has not been deleted."};
+                return new NodeViewModel { IsSuccess = false, Message = "The node has not been deleted." };
             }
 
             return new NodeViewModel { IsSuccess = true, Message = "The node has been deleted." };
         }
-        
     }
 }

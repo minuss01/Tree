@@ -67,9 +67,15 @@ body {
     line-height: 60px;
 }
 
+.main-app {
+    display: flex;
+    justify-content: center;
+}
+
 .section {
     border: 2px solid #aaaaaa;
     border-radius: 5px;
+    min-width: 50vh;
     min-height: 50vh;
     padding: 0 !important;
 }

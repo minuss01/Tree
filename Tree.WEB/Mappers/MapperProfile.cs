@@ -9,8 +9,8 @@ namespace Tree.WEB.Mappers
         public MapperProfile()
         {
             CreateMap<Node, NodeViewModel>();
-            CreateMap<NodeViewModel, NodeFormViewModel>();
-            CreateMap<NodeFormViewModel, Node>();
+            CreateMap<NodeViewModel, NodePostFormViewModel>();
+            CreateMap<NodePostFormViewModel, Node>();
             CreateMap<Node, LabelValueViewModel>()
                 .ForMember(l => l.Label, opt => opt.MapFrom(n => n.Name))
                 .ForMember(l => l.Value, opt => opt.MapFrom(n => n.Id));

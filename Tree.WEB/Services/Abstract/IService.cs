@@ -9,8 +9,8 @@ namespace Tree.WEB.Services.Abstract
         Task<NodeViewModel> GetNodeByIdAsync(int id);
         Task<List<NodeViewModel>> GetAllNodesAsync();
         Task<List<LabelValueViewModel>> GetSelectValuesAsync();
-        Task<NodeViewModel> AddNodeAsync(NodeFormViewModel request);
-        Task<NodeViewModel> UpdateNodeAsync(NodeFormViewModel request);
+        Task<NodeViewModel> AddNodeAsync(NodeAddFormViewModel request);
+        Task<NodeViewModel> UpdateNodeAsync(NodePostFormViewModel request);
         Task<NodeViewModel> RemoveNodeAsync(int id);
 
     }

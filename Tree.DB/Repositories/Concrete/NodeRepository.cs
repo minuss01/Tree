@@ -24,7 +24,9 @@ namespace Tree.DB.Repositories.Concrete
 
         public async Task<IList<Node>> GetAllAsync()
         {
-            return await _context.Nodes.Where(c => c.NodeParentId == null).ToListAsync();
+            return await _context.Nodes
+                .Where(c => c.NodeParentId == null)
+                .ToListAsync();
         }
 
         public async Task<IList<Node>> GetAllForSelectValuesAsync()
