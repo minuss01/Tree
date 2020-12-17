@@ -9,6 +9,7 @@ namespace Tree.DB.Repositories.Abstract
     {
         IQueryable<Node> GetQueryable();
         Task<IList<Node>> GetAllAsync();
+        Task<IList<Node>> GetAllForSelectValuesAsync();
         Task<Node> GetByIdAsync(int id);
         Task AddAsync(Node node);
         Task RemoveAsync(Node node);

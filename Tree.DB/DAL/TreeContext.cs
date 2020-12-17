@@ -8,5 +8,9 @@ namespace Tree.DB.DAL
         public DbSet<Node> Nodes { get; set; }
 
         public TreeContext(DbContextOptions options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }

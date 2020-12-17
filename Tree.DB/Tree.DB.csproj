@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DAL\Migrations\20201216213504_cascade-delete.cs" />
+    <Compile Remove="DAL\Migrations\20201216213504_cascade-delete.Designer.cs" />
+    <Compile Remove="DAL\Migrations\20201216214026_cacsca.cs" />
+    <Compile Remove="DAL\Migrations\20201216214026_cacsca.Designer.cs" />
+    <Compile Remove="DAL\Migrations\20201216214728_adding-cascade-delete.cs" />
+    <Compile Remove="DAL\Migrations\20201216214728_adding-cascade-delete.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>

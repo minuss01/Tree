@@ -6,6 +6,7 @@ namespace Tree.WEB.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int? NodeParentId { get; set; }
 
         public List<NodeViewModel> Nodes { get; set; }
     }

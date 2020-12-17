@@ -27,6 +27,11 @@ namespace Tree.DB.Repositories.Concrete
             return await _context.Nodes.Where(c => c.NodeParentId == null).ToListAsync();
         }
 
+        public async Task<IList<Node>> GetAllForSelectValuesAsync()
+        {
+            return await _context.Nodes.ToListAsync();
+        }
+
         public async Task<Node> GetByIdAsync(int id)
         {
             return await _context.Nodes.FirstOrDefaultAsync(c => c.Id == id);
@@ -39,6 +44,7 @@ namespace Tree.DB.Repositories.Concrete
 
         public async Task RemoveAsync(Node node)
         {
+            await RemoveChildrens(node.Nodes);
             await Task.FromResult(_context.Nodes.Remove(node));
         }
 
@@ -51,5 +57,16 @@ namespace Tree.DB.Repositories.Concrete
         {
             await Task.FromResult(_context.Nodes.Update(node));
         }
+
+        private async Task RemoveChildrens(List<Node> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                await RemoveChildrens(node.Nodes);
+                await Task.FromResult(_context.Nodes.Remove(node));
+            }
+        }
+
+
     }
 }

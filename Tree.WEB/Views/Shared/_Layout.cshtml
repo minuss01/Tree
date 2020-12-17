@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Tree</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
 </head>
@@ -40,17 +41,85 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(getTree());
+        $(document).ready(getSelectValues());
+
+        function getTree() {
             $.ajax({
                 type: 'GET',
                 url: '/Node/GetTree/',
                 success: function (response) {
                     $("#tree").html(buildTree(response, false));
-                    //$("#tree2").html(buildList(response, false));
                     makeDropdowns();
                 }
             });
+        }
+
+        $("#add-form").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = {
+                id: 0,
+                name: $('#add-name').val(),
+                nodeParentId: parseInt($('#add-parentid').val()) === 0 ? null : parseInt($('#add-parentid').val())
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Node/Add',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(form),
+                success: function (response) {
+                    alert(response);
+                    $('#add-parentid').val(0);
+                    $('#add-modal').modal('hide');
+                    getTree();
+                }
+            });
+
+
         });
+
+        $("#edit-form").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = {
+                id: parseInt($('#edit-id').val()) === 0 ? null : parseInt($('#edit-id').val()),
+                name: $('#edit-name').val(),
+                nodeParentId: parseInt($('#select-node').val()) === 0 ? null : parseInt($('#select-node').val())
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Node/Edit',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(form),
+                success: function (response) {
+                    alert(response);
+                    $('#edit-parentid').val(0);
+                    $('#edit-name').val('');
+                    $('#edit-id').val(0);
+                    $('#edit-modal').modal('hide');
+                    getTree();
+                }
+            });
+
+
+        });
+
+        function deleteNode(id) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/Node/Delete/' + id,
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response);
+                    getTree();
+                }
+            });
+        }
 
         function buildTree(data, isNode) {
             var html = '';
@@ -58,12 +127,10 @@
             for (item in data) {
                 html += '<li>';
                 if (data[item].nodes.length > 0) {
-
-                    html += '<span class="caret">' + data[item].name + '</span>';
-
+                    html += '<span class="caret">' + data[item].name + '</span>' + renderActions(data[item]);
                     html += buildTree(data[item].nodes, true);
                 } else {
-                    html += data[item].name;
+                    html += '<span class="empty">' + data[item].name + '</span>' + renderActions(data[item]);
                 }
                 html += '</li>';
             }
@@ -83,30 +150,57 @@
             }
         }
 
-        //function buildList(data, isSub) {
-        //    var html = (isSub) ? '<div>' : ''; // Wrap with div if true
-        //    html += '<ul>';
-        //    for (item in data) {
-        //        html += '<li>';
-        //        if (typeof (data[item].nodes) === 'object') { // An array will return 'object'
-        //            if (isSub) {
-        //                html += '<a href="#">' + data[item].name + '</a>';
-        //            } else {
-        //                html += data[item].name; // Submenu found, but top level list item.
-        //            }
-        //            html += buildList(data[item].nodes, true); // Submenu found. Calling recursively same method (and wrapping it in a div)
-        //        } else {
-        //            html += data[item].name // No submenu
-        //        }
-        //        html += '</li>';
-        //    }
-        //    html += '</ul>';
-        //    html += (isSub) ? '</div>' : '';
-        //    return html;
-        //}
+        function showAddModal(parentId) {
+            if (parentId !== null) {
+                $('#add-parentid').val(parentId);
+            }
+            $('#add-modal').modal('show');
+        }
 
-        
+        function getSelectValues() {
+            $.ajax({
+                type: 'GET',
+                url: '/Node/GetSelectValues/',
+                success: function (response) {
+                    response.forEach(function (o) {
+                        $('#select-node').append(`<option value="${o.value}">
+                                               ${o.label}
+                                          </option>`);
+                    })
+                }
+            });
+        }
 
+        function showEditModal(id) {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Node/Edit/' + id,
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    console.log(response);
+                    $("#edit-name").val(response.name);
+                    $("#edit-id").val(response.id);
+                    if (response.nodeParentId !== null) {
+                        $("#select-node").val(response.nodeParentId);
+                    }
+                    else {
+                        $("#select-node").val(null);
+                    }
+                    $('#edit-modal').modal('show');
+                }
+            })
+        }
+
+        function renderActions(data) {
+            var html = '<span class="tree-actions">' +
+                '<button class="action-icon"onclick="showAddModal(' + data.id + ')"><i class="fas fa-plus"></i></button>' +
+                '<button class="action-icon" onclick="showEditModal(' + data.id + ')"><i class="fas fa-edit"></i></button>' +
+                '<button class="action-icon" onclick="deleteNode(' + data.id + ')"><i class="fas fa-trash"></i></button>' +
+                '</span>';
+
+            return html;
+        }
     </script>
 
     @RenderSection("Scripts", required: false)

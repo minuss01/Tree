@@ -12,6 +12,8 @@ namespace Tree.DB.Entities
         public int? NodeParentId { get; set; }
         public virtual Node NodeParent { get; set; }
 
+        public Node() { }
+
         public Node(
             string name,
             int? nodeParentId)

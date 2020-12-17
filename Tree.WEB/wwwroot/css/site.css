@@ -1,5 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 
 a.navbar-brand {
     white-space: normal;
@@ -7,7 +6,6 @@ a.navbar-brand {
     word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
@@ -24,8 +22,6 @@ a {
     border-color: #1861ac;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
     font-size: 14px;
 }
@@ -53,16 +49,14 @@ button.accept-policy {
     line-height: inherit;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
     position: relative;
     min-height: 100%;
 }
 
 body {
-    /* Margin bottom by footer height */
     margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .footer {
@@ -70,40 +64,71 @@ body {
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    line-height: 60px; /* Vertically center the text there */
+    line-height: 60px;
 }
+
+.section {
+    border: 2px solid #aaaaaa;
+    border-radius: 5px;
+    min-height: 50vh;
+    padding: 0 !important;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 30px;
+    border-bottom: 1px double #d1d1d1;
+    background-color: #c4c4c4;
+}
+
+.section-header-title {
+    margin-left: 10px;
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.section-header-actions {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.action-icon {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+    .action-icon:hover {
+        color: #626262;
+    }
 
 #tree {
     display: flex;
     flex-direction: column;
+    margin: 25px 50px;
 }
 
-/* Remove default bullets */
 ul, #tree {
     list-style-type: none;
 }
 
-    /* Remove margins and padding from the parent ul */
     #tree ul {
         margin: 0;
-        border-left: 1px dashed  #878787;
+        padding-left: 20px;
+        border-left: 1px dashed #878787;
     }
 
-        #tree :first-child {
-            border: none !important;
-        }
+    #tree :first-child {
+        border: none !important;
+    }
 
-
-
-
-
-/* Style the caret/arrow */
 .caret {
     cursor: pointer;
-    user-select: none; /* Prevent text selection */
+    user-select: none;
 }
 
-    /* Create the caret/arrow with a unicode, and style it */
     .caret::before {
         content: "\25B6";
         color: black;
@@ -111,21 +136,29 @@ ul, #tree {
         margin-right: 6px;
     }
 
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .caret-down::before {
     transform: rotate(90deg);
 }
 
-/* Hide the nested list */
 .nested {
     display: none;
 }
 
-.empty {
-    margin-right: 20px;
+.empty, .tree-actions {
+    margin-left: 19px;
 }
 
-/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
 .active {
     display: block;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end
+}
+
+.modal-buttons button {
+    margin: 10px;
+
 }
